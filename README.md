@@ -13,4 +13,5 @@ replace windows 10's TSA(Taskbar Status Area) battery icon with percentage form
 - *Enter* to open this path.
 - drag the `.exe` file you downloaded to this folder
 
-**Notice** *It's still on progress...*
+## New features
+It can show different color when your battery is under different status.
