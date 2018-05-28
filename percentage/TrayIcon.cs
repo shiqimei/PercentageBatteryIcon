@@ -16,7 +16,7 @@ namespace percentage
         private string batteryPercentage;
         private NotifyIcon notifyIcon;
 
-        private Color batteryColor = Color.Green;
+        private Color batteryColor = Color.Green;   // 电池数字颜色            
 
         public TrayIcon()
         {
@@ -54,18 +54,27 @@ namespace percentage
             PowerStatus powerStatus = SystemInformation.PowerStatus;
             batteryPercentage = (powerStatus.BatteryLifePercent * 100).ToString();
 
+            // 如果电量充满则不显示
+            if(batteryPercentage == "100")
+            {
+                notifyIcon.Visible = false;
+            } else
+            {
+                notifyIcon.Visible = true;
+            }
+
             // 如果电池正在充电,则将数字颜色改为金黄色
             if (powerStatus.BatteryChargeStatus.ToString().Contains(BatteryChargeStatus.Charging.ToString()))
             {
-                batteryColor = Color.FromArgb(255,255,0);
+                batteryColor = Color.FromArgb(254,190,4);
             } else
             {
                 if (powerStatus.BatteryChargeStatus.ToString().Contains(BatteryChargeStatus.Low.ToString()))
                 {
-                    batteryColor = Color.FromArgb(255, 51, 0);
+                    batteryColor = Color.FromArgb(254, 97, 82);
                 } else
                 {
-                    batteryColor = Color.FromArgb(51, 255, 0);
+                    batteryColor = Color.FromArgb(7, 216, 47);
                 }
             }
             using (Bitmap bitmap = new Bitmap(DrawText(batteryPercentage, new Font(iconFont, iconFontSize), batteryColor, Color.Transparent)))   // 背景色透明
@@ -99,7 +108,7 @@ namespace percentage
         private Image DrawText(String text, Font font, Color textColor, Color backColor)
         {
             var textSize = GetImageSize(text, font);
-            Image image = new Bitmap(45, 45);       // 位图大小
+            Image image = new Bitmap(48, 45);       // 位图大小
             using (Graphics graphics = Graphics.FromImage(image))
             {
                 // 绘制背景
@@ -109,7 +118,7 @@ namespace percentage
                 using (Brush textBrush = new SolidBrush(textColor))
                 {
                     graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-                    graphics.DrawString(text, font, textBrush, 3, -2);   //渲染文本的偏移
+                    graphics.DrawString(text, font, textBrush, 6, 0);   //渲染文本的偏移
                     graphics.Save();
                 }
             }
