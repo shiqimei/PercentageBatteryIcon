@@ -11,3 +11,16 @@ D:\C#\Clone\percentage\percentage\percentage\obj\Debug\percentage.exe.manifest
 D:\C#\Clone\percentage\percentage\percentage\obj\Debug\percentage.application
 D:\C#\Clone\percentage\percentage\percentage\obj\Debug\percentage.exe
 D:\C#\Clone\percentage\percentage\percentage\obj\Debug\percentage.pdb
+D:\C#\project\percent\percentage\bin\Debug\percentage.exe.config
+D:\C#\project\percent\percentage\bin\Debug\percentage.exe.manifest
+D:\C#\project\percent\percentage\bin\Debug\percentage.application
+D:\C#\project\percent\percentage\bin\Debug\percentage.exe
+D:\C#\project\percent\percentage\bin\Debug\percentage.pdb
+D:\C#\project\percent\percentage\obj\Debug\percentage.csprojResolveAssemblyReference.cache
+D:\C#\project\percent\percentage\obj\Debug\percentage.Properties.Resources.resources
+D:\C#\project\percent\percentage\obj\Debug\percentage.csproj.GenerateResource.cache
+D:\C#\project\percent\percentage\obj\Debug\percentage.csproj.CoreCompileInputs.cache
+D:\C#\project\percent\percentage\obj\Debug\percentage.exe.manifest
+D:\C#\project\percent\percentage\obj\Debug\percentage.application
+D:\C#\project\percent\percentage\obj\Debug\percentage.exe
+D:\C#\project\percent\percentage\obj\Debug\percentage.pdb

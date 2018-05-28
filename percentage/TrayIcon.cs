@@ -16,6 +16,8 @@ namespace percentage
         private string batteryPercentage;
         private NotifyIcon notifyIcon;
 
+        private Color batteryColor = Color.Green;
+
         public TrayIcon()
         {
             ContextMenu contextMenu = new ContextMenu();
@@ -23,13 +25,13 @@ namespace percentage
 
             notifyIcon = new NotifyIcon();
 
-            // initialize contextMenu
+            // 初始化上下文菜单
             contextMenu.MenuItems.AddRange(new MenuItem[] { menuItem });
 
-            // initialize menuItem
+            // 初始化上下文菜单项
             menuItem.Index = 0;
             menuItem.Text = "退出";
-            menuItem.Click += new System.EventHandler(menuItem_Click);
+            menuItem.Click += new EventHandler(menuItem_Click);     // 注册上下文菜单点击事件
 
             notifyIcon.ContextMenu = contextMenu;
 
@@ -37,20 +39,38 @@ namespace percentage
 
             notifyIcon.Visible = true;
 
+            // 设定计时器
             Timer timer = new Timer();
-            timer.Tick += new EventHandler(timer_Tick);
-            timer.Interval = 1000; // in miliseconds
+            timer.Tick += new EventHandler(timer_Tick); // 注册计时器事件(用于更新电池百分比数字)
+            timer.Interval = 1000; // 计时器频率：1s (也就是电池百分比的更新频率)
             timer.Start();
         }
 
+        /**
+         * 电池百分比更新事件
+         */
         private void timer_Tick(object sender, EventArgs e)
         {
             PowerStatus powerStatus = SystemInformation.PowerStatus;
             batteryPercentage = (powerStatus.BatteryLifePercent * 100).ToString();
 
-            using (Bitmap bitmap = new Bitmap(DrawText(batteryPercentage, new Font(iconFont, iconFontSize), Color.DarkOrange, Color.Transparent)))   // 背景色透明
+            // 如果电池正在充电,则将数字颜色改为金黄色
+            if (powerStatus.BatteryChargeStatus.ToString().Contains(BatteryChargeStatus.Charging.ToString()))
             {
-                System.IntPtr intPtr = bitmap.GetHicon();
+                batteryColor = Color.FromArgb(255,255,0);
+            } else
+            {
+                if (powerStatus.BatteryChargeStatus.ToString().Contains(BatteryChargeStatus.Low.ToString()))
+                {
+                    batteryColor = Color.FromArgb(255, 51, 0);
+                } else
+                {
+                    batteryColor = Color.FromArgb(51, 255, 0);
+                }
+            }
+            using (Bitmap bitmap = new Bitmap(DrawText(batteryPercentage, new Font(iconFont, iconFontSize), batteryColor, Color.Transparent)))   // 背景色透明
+            {
+                IntPtr intPtr = bitmap.GetHicon();
                 try
                 {
                     using (Icon icon = Icon.FromHandle(intPtr))

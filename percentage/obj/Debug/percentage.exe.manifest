@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="percentage.exe" size="8192">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="percentage.exe" size="8704">
       <assemblyIdentity name="percentage" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>1UMp/6sRwAIUpJ/yHUforul71y5HInIhw4AHoZQluZc=</dsig:DigestValue>
+        <dsig:DigestValue>pNA0JB1ajsx90Rjfo5GkK8JlCUmMbh9XUQDuTo3rqoQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
