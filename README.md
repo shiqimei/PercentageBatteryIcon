@@ -1,7 +1,7 @@
 # PercentageBatteryIcon
 replace windows 10's TSA(Taskbar Status Area) battery icon with percentage form
 
-![](http://p40kjburh.bkt.clouddn.com/18-5-28/63030344.jpg)
+![](http://p40kjburh.bkt.clouddn.com/18-6-2/69803944.jpg)
 
 ## Usage
 *Step1* Download
@@ -14,8 +14,11 @@ replace windows 10's TSA(Taskbar Status Area) battery icon with percentage form
 - drag the `.exe` file you downloaded to this folder
 - restart your system
 
-## New features
-It can show different color when your battery is under different status.
+## Features
+1. It can show different color when your battery is under different status.
+2. now, it's support customize your own percent battery icon with different colors.
+
+![](http://p40kjburh.bkt.clouddn.com/18-6-2/60060727.jpg)
 
 ## Acknowledgements
 Thanks a lot to [kas/percentage](https://github.com/kas/percentage), all my work is based on his repository.
