@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -10,8 +11,15 @@ namespace percentage
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         static extern bool DestroyIcon(IntPtr handle);
 
-        private const string iconFont = "Segoe UI";
-        private const int iconFontSize = 26;    // 带渲染文本的字体大小
+        private const string iconFont = "Microsoft Yahei";
+
+        //全局变量
+        public static int iconFontSize = 28;    // 带渲染文本的字体大小(全局变量)
+        public static int xoffset = 0;
+        public static int yoffset = 0;
+        public static Color normalColor = Color.FromArgb(255, 255, 255); // 主颜色
+        public static Color chargingColor = Color.FromArgb(254, 190, 4);   // 充电时颜色
+        public static Color lowColor = Color.FromArgb(254, 97, 82);   // 低电量时颜色
 
         private string batteryPercentage;
         private NotifyIcon notifyIcon;
@@ -20,18 +28,50 @@ namespace percentage
 
         public TrayIcon()
         {
+            // 从注册表加载颜色
+            RegistryKey hklm = Registry.CurrentUser;
+            RegistryKey lgn0 = hklm.OpenSubKey(@"Software\BatteryIcon", true);
+            if (lgn0 != null)   //当该注册表存在则应用注册表中的值
+            { 
+                RegistryKey lgn = hklm.OpenSubKey(@"Software\BatteryIcon", true);
+                string fontsize = lgn.GetValue("fontsize").ToString();
+                string xoff = lgn.GetValue("xoffset").ToString();
+                string yoff = lgn.GetValue("yoffset").ToString();
+                string normal = lgn.GetValue("normalColor").ToString();
+                string charging = lgn.GetValue("chargingColor").ToString();
+                string low = lgn.GetValue("lowColor").ToString();
+                try
+                {
+                    iconFontSize = Convert.ToInt32(fontsize);   // 从字符串获取字体大小
+                    xoffset = Convert.ToInt32(xoff);
+                    yoffset = Convert.ToInt32(yoff);
+                } catch
+                {
+                    // do nothing
+                }
+                normalColor = (Color)new ColorConverter().ConvertFromString(normal);   // 从字符串获取颜色
+                chargingColor = (Color)new ColorConverter().ConvertFromString(charging);   // 从字符串获取颜色
+                lowColor = (Color)new ColorConverter().ConvertFromString(low);   // 从字符串获取颜色
+            }
+
             ContextMenu contextMenu = new ContextMenu();
-            MenuItem menuItem = new MenuItem();
+            MenuItem menuItem1 = new MenuItem();    //设置按钮
+            MenuItem menuItem2 = new MenuItem();    //退出按钮
 
             notifyIcon = new NotifyIcon();
 
             // 初始化上下文菜单
-            contextMenu.MenuItems.AddRange(new MenuItem[] { menuItem });
+            contextMenu.MenuItems.AddRange(new MenuItem[] { menuItem1, menuItem2 });
 
             // 初始化上下文菜单项
-            menuItem.Index = 0;
-            menuItem.Text = "退出";
-            menuItem.Click += new EventHandler(menuItem_Click);     // 注册上下文菜单点击事件
+            // 初始化上下文菜单项
+            menuItem1.Index = 0;
+            menuItem1.Text = "设置";
+            menuItem1.Click += new EventHandler(settingButton_Click);     // 注册上下文菜单点击事件
+
+            menuItem2.Index = 1;
+            menuItem2.Text = "退出";
+            menuItem2.Click += new EventHandler(exitButton_Click);     // 注册上下文菜单点击事件
 
             notifyIcon.ContextMenu = contextMenu;
 
@@ -66,15 +106,15 @@ namespace percentage
             // 如果电池正在充电,则将数字颜色改为金黄色
             if (powerStatus.BatteryChargeStatus.ToString().Contains(BatteryChargeStatus.Charging.ToString()))
             {
-                batteryColor = Color.FromArgb(254,190,4);
+                batteryColor = chargingColor;
             } else
             {
                 if (powerStatus.BatteryChargeStatus.ToString().Contains(BatteryChargeStatus.Low.ToString()))
                 {
-                    batteryColor = Color.FromArgb(254, 97, 82);
+                    batteryColor = lowColor;
                 } else
                 {
-                    batteryColor = Color.FromArgb(7, 216, 47);
+                    batteryColor = normalColor;
                 }
             }
             using (Bitmap bitmap = new Bitmap(DrawText(batteryPercentage, new Font(iconFont, iconFontSize), batteryColor, Color.Transparent)))   // 背景色透明
@@ -96,9 +136,17 @@ namespace percentage
         }
 
         /**
+         * 右键菜单设置按钮点击事件
+         */
+        private void settingButton_Click(object sender, EventArgs e)
+        {
+            new Settings().ShowDialog();
+        }
+
+        /**
          * 右键菜单退出按钮点击事件
          */
-        private void menuItem_Click(object sender, EventArgs e)
+        private void exitButton_Click(object sender, EventArgs e)
         {
             notifyIcon.Visible = false;
             notifyIcon.Dispose();
@@ -117,8 +165,8 @@ namespace percentage
                 // 文本笔刷
                 using (Brush textBrush = new SolidBrush(textColor))
                 {
-                    graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-                    graphics.DrawString(text, font, textBrush, 6, 0);   //渲染文本的偏移
+                    graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;   //字体渲染方案
+                    graphics.DrawString(text, font, textBrush, xoffset, yoffset);   //渲染文本的偏移
                     graphics.Save();
                 }
             }
