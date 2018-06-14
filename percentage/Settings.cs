@@ -22,6 +22,7 @@ namespace percentage
                 lgn.SetValue("normalColor", "255, 255, 255", RegistryValueKind.String);
                 lgn.SetValue("chargingColor", "254, 190, 4", RegistryValueKind.String);
                 lgn.SetValue("lowColor", "254, 97, 82", RegistryValueKind.String);
+                lgn.SetValue("autoHide", "false", RegistryValueKind.String); // 电池电量充满后是否自动隐藏
             }
             RegistryKey lgn1 = hklm.OpenSubKey(@"Software\BatteryIcon", true);
             // 从注册表获取数据
@@ -193,10 +194,41 @@ namespace percentage
             MatchCollection matchs = reg.Matches(s);
 
             string filename = "";
-            if (matchs.Count > 0)   //www.2cto.com
+            if (matchs.Count > 0)
             {
                 filename = matchs[0].Groups[1].Value;
                 System.Diagnostics.Process.Start(filename, "https://github.com/loliMay/PercentageBatteryIcon");
+            }
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Settings_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        // 电池电量充满后是否自动隐藏电池图标
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            RegistryKey hklm = Registry.CurrentUser;
+            RegistryKey lgn = hklm.OpenSubKey(@"Software\BatteryIcon", true);
+            if (checkBox1.Checked == true)
+            {
+                TrayIcon.autoHide = "true";
+                lgn.SetValue("autoHide", "true", RegistryValueKind.String);
+            } else
+            {
+                TrayIcon.autoHide = "false";
+                lgn.SetValue("autoHide", "false", RegistryValueKind.String);
             }
         }
     }

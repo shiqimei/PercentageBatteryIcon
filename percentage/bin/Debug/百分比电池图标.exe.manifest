@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="百分比电池图标.exe" size="94720">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="百分比电池图标.exe" size="95744">
       <assemblyIdentity name="百分比电池图标" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>MSjlqJ3kqysEPzxDLk1aCFXkoWeh5p9GjnriucqNWCg=</dsig:DigestValue>
+        <dsig:DigestValue>F1G9wtpJCuKcUoHPTHMx066ipZK8vE742ZXPc3UMX2g=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

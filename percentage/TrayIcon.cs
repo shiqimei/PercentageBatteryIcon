@@ -20,6 +20,9 @@ namespace percentage
         public static Color normalColor = Color.FromArgb(255, 255, 255); // 主颜色
         public static Color chargingColor = Color.FromArgb(254, 190, 4);   // 充电时颜色
         public static Color lowColor = Color.FromArgb(254, 97, 82);   // 低电量时颜色
+        public static int isHideIcon = 1;
+        public static int isShowPercent = 0;
+        public static string autoHide;
 
         private string batteryPercentage;
         private NotifyIcon notifyIcon;
@@ -40,6 +43,7 @@ namespace percentage
                 string normal = lgn.GetValue("normalColor").ToString();
                 string charging = lgn.GetValue("chargingColor").ToString();
                 string low = lgn.GetValue("lowColor").ToString();
+                autoHide = lgn.GetValue("autoHide").ToString();
                 try
                 {
                     iconFontSize = Convert.ToInt32(fontsize);   // 从字符串获取字体大小
@@ -94,12 +98,26 @@ namespace percentage
             PowerStatus powerStatus = SystemInformation.PowerStatus;
             batteryPercentage = (powerStatus.BatteryLifePercent * 100).ToString();
 
+            // 从注册表加载偏移信息
+            RegistryKey hklm = Registry.CurrentUser;
+            RegistryKey lgn = hklm.OpenSubKey(@"Software\BatteryIcon", true);
+            iconFontSize = Convert.ToInt32(lgn.GetValue("fontsize").ToString()); // 更新信息
+            xoffset = Convert.ToInt32(lgn.GetValue("xoffset").ToString());
+            yoffset = Convert.ToInt32(lgn.GetValue("yoffset").ToString());
+
             // 如果电量充满则不显示
-            if(batteryPercentage == "100")
+            if (batteryPercentage == "100" && autoHide == "true")
             {
-                notifyIcon.Visible = false;
+                    notifyIcon.Visible = false;
             } else
             {
+                if (batteryPercentage == "100")
+                {
+                    iconFontSize = 23;
+                    xoffset = -10;
+                    yoffset = 5;
+                    batteryPercentage = "100";
+                }
                 notifyIcon.Visible = true;
             }
 
@@ -116,7 +134,7 @@ namespace percentage
                 {
                     batteryColor = normalColor;
                 }
-            }
+            }                                         // 渲染字体内容
             using (Bitmap bitmap = new Bitmap(DrawText(batteryPercentage, new Font(iconFont, iconFontSize), batteryColor, Color.Transparent)))   // 背景色透明
             {
                 IntPtr intPtr = bitmap.GetHicon();
@@ -176,7 +194,7 @@ namespace percentage
 
         private static SizeF GetImageSize(string text, Font font)
         {
-            using (Image image = new Bitmap(10, 10))
+            using (Image image = new Bitmap(32, 32))
             using (Graphics graphics = Graphics.FromImage(image))
                 return graphics.MeasureString(text, font);
         }
