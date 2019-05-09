@@ -11,27 +11,37 @@ namespace percentage
     {
         public Settings()
         {
-            RegistryKey hklm = Registry.CurrentUser;
-            RegistryKey lgn0 = hklm.OpenSubKey(@"Software\BatteryIcon", true);
-            if (lgn0 == null)   //初始化
-            {
-                RegistryKey lgn = hklm.OpenSubKey(@"Software", true).CreateSubKey("BatteryIcon");
-                lgn.SetValue("xoffset", "0", RegistryValueKind.String);
-                lgn.SetValue("yoffset", "0", RegistryValueKind.String);
-                lgn.SetValue("fontsize", "28", RegistryValueKind.String);
-                lgn.SetValue("normalColor", "255, 255, 255", RegistryValueKind.String);
-                lgn.SetValue("chargingColor", "254, 190, 4", RegistryValueKind.String);
-                lgn.SetValue("lowColor", "254, 97, 82", RegistryValueKind.String);
-                lgn.SetValue("autoHide", "false", RegistryValueKind.String); // 电池电量充满后是否自动隐藏
-            }
-            RegistryKey lgn1 = hklm.OpenSubKey(@"Software\BatteryIcon", true);
-            // 从注册表获取数据
-            string fontsize = lgn1.GetValue("fontsize").ToString();
-            string xoffset = lgn1.GetValue("xoffset").ToString();
-            string yoffset = lgn1.GetValue("yoffset").ToString();
-            string normalColor = lgn1.GetValue("normalColor").ToString();
-            string chargingColor = lgn1.GetValue("chargingColor").ToString();
-            string lowColor = lgn1.GetValue("lowColor").ToString();
+            //RegistryKey hklm = Registry.CurrentUser;
+            //RegistryKey lgn0 = hklm.OpenSubKey(@"Software\BatteryIcon", true);
+            //if (lgn0 == null)   //初始化
+            //{
+            //    RegistryKey lgn = hklm.OpenSubKey(@"Software", true).CreateSubKey("BatteryIcon");
+            //    lgn.SetValue("xoffset", "0", RegistryValueKind.String);
+            //    lgn.SetValue("yoffset", "0", RegistryValueKind.String);
+            //    lgn.SetValue("fontsize", "28", RegistryValueKind.String);
+            //    lgn.SetValue("normalColor", "255, 255, 255", RegistryValueKind.String);
+            //    lgn.SetValue("chargingColor", "254, 190, 4", RegistryValueKind.String);
+            //    lgn.SetValue("lowColor", "254, 97, 82", RegistryValueKind.String);
+            //    lgn.SetValue("autoHide", "false", RegistryValueKind.String); // 电池电量充满后是否自动隐藏
+            //}
+            //RegistryKey lgn1 = hklm.OpenSubKey(@"Software\BatteryIcon", true);
+            //// 从注册表获取数据
+            //string fontsize = lgn1.GetValue("fontsize").ToString();
+            //string xoffset = lgn1.GetValue("xoffset").ToString();
+            //string yoffset = lgn1.GetValue("yoffset").ToString();
+            //string normalColor = lgn1.GetValue("normalColor").ToString();
+            //string chargingColor = lgn1.GetValue("chargingColor").ToString();
+            //string lowColor = lgn1.GetValue("lowColor").ToString();
+
+
+            PTConfig cfg = new PTConfig();
+            cfg.Load();
+            string fontsize = cfg.FontSize;
+            string xoffset = cfg.XOffset;
+            string yoffset = cfg.YOffset;
+            string normalColor = cfg.NormalColor;
+            string chargingColor = cfg.ChargingColor;
+            string lowColor = cfg.LowColor;
 
             InitializeComponent(); //绘制控件
             textBox1.Text = fontsize;
@@ -73,10 +83,16 @@ namespace percentage
             {
                 TrayIcon.iconFontSize = Convert.ToInt32(textBox1.Text);
                 // 将设置的字号保存到注册表中
-                RegistryKey hklm = Registry.CurrentUser;
-                RegistryKey lgn = hklm.OpenSubKey(@"Software", true).CreateSubKey("BatteryIcon");
-                lgn.SetValue("fontsize", textBox1.Text, RegistryValueKind.String);
-            } catch
+                //RegistryKey hklm = Registry.CurrentUser;
+                //RegistryKey lgn = hklm.OpenSubKey(@"Software", true).CreateSubKey("BatteryIcon");
+                //lgn.SetValue("fontsize", textBox1.Text, RegistryValueKind.String);
+
+                PTConfig cfg = new PTConfig();
+                cfg.Load();
+                cfg.FontSize = textBox1.Text;
+                cfg.Update();
+            }
+            catch
             {
                 // do nothing
             }
@@ -87,9 +103,14 @@ namespace percentage
             try
             {
                 TrayIcon.xoffset = Convert.ToInt32(textBox3.Text);
-                RegistryKey hklm = Registry.CurrentUser;
-                RegistryKey lgn = hklm.OpenSubKey(@"Software", true).CreateSubKey("BatteryIcon");
-                lgn.SetValue("xoffset", textBox3.Text, RegistryValueKind.String);
+                //RegistryKey hklm = Registry.CurrentUser;
+                //RegistryKey lgn = hklm.OpenSubKey(@"Software", true).CreateSubKey("BatteryIcon");
+                //lgn.SetValue("xoffset", textBox3.Text, RegistryValueKind.String);
+
+                PTConfig cfg = new PTConfig();
+                cfg.Load();
+                cfg.XOffset = textBox3.Text;
+                cfg.Update();
             }
             catch
             {
@@ -103,9 +124,14 @@ namespace percentage
             try
             {
                 TrayIcon.yoffset = Convert.ToInt32(textBox4.Text);
-                RegistryKey hklm = Registry.CurrentUser;
-                RegistryKey lgn = hklm.OpenSubKey(@"Software", true).CreateSubKey("BatteryIcon");
-                lgn.SetValue("yoffset", textBox4.Text, RegistryValueKind.String);
+                //RegistryKey hklm = Registry.CurrentUser;
+                //RegistryKey lgn = hklm.OpenSubKey(@"Software", true).CreateSubKey("BatteryIcon");
+                //lgn.SetValue("yoffset", textBox4.Text, RegistryValueKind.String);
+
+                PTConfig cfg = new PTConfig();
+                cfg.Load();
+                cfg.YOffset = textBox4.Text;
+                cfg.Update();
             }
             catch
             {
@@ -121,9 +147,14 @@ namespace percentage
                 pictureBox1.BackColor = loColorForm.Color;
                 TrayIcon.normalColor = loColorForm.Color;
                 // 将设置的颜色保存到注册表中
-                RegistryKey hklm = Registry.CurrentUser;
-                RegistryKey lgn = hklm.OpenSubKey(@"Software", true).CreateSubKey("BatteryIcon");
-                lgn.SetValue("normalColor", new ColorConverter().ConvertToString(TrayIcon.normalColor), RegistryValueKind.String);
+                //RegistryKey hklm = Registry.CurrentUser;
+                //RegistryKey lgn = hklm.OpenSubKey(@"Software", true).CreateSubKey("BatteryIcon");
+                //lgn.SetValue("normalColor", new ColorConverter().ConvertToString(TrayIcon.normalColor), RegistryValueKind.String);
+
+                PTConfig cfg = new PTConfig();
+                cfg.Load();
+                cfg.NormalColor = new ColorConverter().ConvertToString(TrayIcon.normalColor);
+                cfg.Update();
             }
         }
 
@@ -135,9 +166,14 @@ namespace percentage
                 pictureBox2.BackColor = loColorForm.Color;
                 TrayIcon.chargingColor = loColorForm.Color;
                 // 将设置的颜色保存到注册表中
-                RegistryKey hklm = Registry.CurrentUser;
-                RegistryKey lgn = hklm.OpenSubKey(@"Software", true).CreateSubKey("BatteryIcon");
-                lgn.SetValue("chargingColor", new ColorConverter().ConvertToString(TrayIcon.chargingColor), RegistryValueKind.String);
+                //RegistryKey hklm = Registry.CurrentUser;
+                //RegistryKey lgn = hklm.OpenSubKey(@"Software", true).CreateSubKey("BatteryIcon");
+                //lgn.SetValue("chargingColor", new ColorConverter().ConvertToString(TrayIcon.chargingColor), RegistryValueKind.String);
+
+                PTConfig cfg = new PTConfig();
+                cfg.Load();
+                cfg.ChargingColor = new ColorConverter().ConvertToString(TrayIcon.chargingColor);
+                cfg.Update();
             }
         }
 
@@ -148,17 +184,22 @@ namespace percentage
             {
                 pictureBox3.BackColor = loColorForm.Color;
                 TrayIcon.lowColor = loColorForm.Color;          // 更新颜色
-                // 将设置的颜色保存到注册表中
-                RegistryKey hklm = Registry.CurrentUser;
-                RegistryKey lgn = hklm.OpenSubKey(@"Software", true).CreateSubKey("BatteryIcon");
-                lgn.SetValue("lowColor", new ColorConverter().ConvertToString(TrayIcon.lowColor), RegistryValueKind.String);
+                                                                // 将设置的颜色保存到注册表中
+                                                                //RegistryKey hklm = Registry.CurrentUser;
+                                                                //RegistryKey lgn = hklm.OpenSubKey(@"Software", true).CreateSubKey("BatteryIcon");
+                                                                //lgn.SetValue("lowColor", new ColorConverter().ConvertToString(TrayIcon.lowColor), RegistryValueKind.String);
+
+                PTConfig cfg = new PTConfig();
+                cfg.Load();
+                cfg.LowColor = new ColorConverter().ConvertToString(TrayIcon.lowColor);
+                cfg.Update();
             }
         }
 
         // 限制文本框只能输入数字
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(!Char.IsNumber(e.KeyChar) && e.KeyChar != (char)8)
+            if (!Char.IsNumber(e.KeyChar) && e.KeyChar != (char)8)
             {
                 e.Handled = true;
             }
@@ -219,17 +260,25 @@ namespace percentage
         // 电池电量充满后是否自动隐藏电池图标
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            RegistryKey hklm = Registry.CurrentUser;
-            RegistryKey lgn = hklm.OpenSubKey(@"Software\BatteryIcon", true);
+            //RegistryKey hklm = Registry.CurrentUser;
+            //RegistryKey lgn = hklm.OpenSubKey(@"Software\BatteryIcon", true);
+
+            PTConfig cfg = new PTConfig();
+            cfg.Load();
+
             if (checkBox1.Checked == true)
             {
                 TrayIcon.autoHide = "true";
-                lgn.SetValue("autoHide", "true", RegistryValueKind.String);
-            } else
+                //lgn.SetValue("autoHide", "true", RegistryValueKind.String);
+                cfg.AutoHide = "true";
+            }
+            else
             {
                 TrayIcon.autoHide = "false";
-                lgn.SetValue("autoHide", "false", RegistryValueKind.String);
+                //lgn.SetValue("autoHide", "false", RegistryValueKind.String);
+                cfg.AutoHide = "false";
             }
+            cfg.Update();
         }
     }
 }

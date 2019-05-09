@@ -25,3 +25,17 @@ D:\C#\Project\percent\percentage\obj\Debug\百分比电池图标.exe.manifest
 D:\C#\Project\percent\percentage\obj\Debug\百分比电池图标.application
 D:\C#\Project\percent\percentage\obj\Debug\百分比电池图标.exe
 D:\C#\Project\percent\percentage\obj\Debug\百分比电池图标.pdb
+C:\Users\Oliver\Documents\GitHub\PercentageBatteryIcon\percentage\bin\Debug\百分比电池图标.exe.config
+C:\Users\Oliver\Documents\GitHub\PercentageBatteryIcon\percentage\bin\Debug\百分比电池图标.exe.manifest
+C:\Users\Oliver\Documents\GitHub\PercentageBatteryIcon\percentage\bin\Debug\百分比电池图标.application
+C:\Users\Oliver\Documents\GitHub\PercentageBatteryIcon\percentage\bin\Debug\百分比电池图标.exe
+C:\Users\Oliver\Documents\GitHub\PercentageBatteryIcon\percentage\bin\Debug\百分比电池图标.pdb
+C:\Users\Oliver\Documents\GitHub\PercentageBatteryIcon\percentage\obj\Debug\percentage.csprojAssemblyReference.cache
+C:\Users\Oliver\Documents\GitHub\PercentageBatteryIcon\percentage\obj\Debug\percentage.Properties.Resources.resources
+C:\Users\Oliver\Documents\GitHub\PercentageBatteryIcon\percentage\obj\Debug\percentage.Settings.resources
+C:\Users\Oliver\Documents\GitHub\PercentageBatteryIcon\percentage\obj\Debug\percentage.csproj.GenerateResource.cache
+C:\Users\Oliver\Documents\GitHub\PercentageBatteryIcon\percentage\obj\Debug\percentage.csproj.CoreCompileInputs.cache
+C:\Users\Oliver\Documents\GitHub\PercentageBatteryIcon\percentage\obj\Debug\百分比电池图标.exe.manifest
+C:\Users\Oliver\Documents\GitHub\PercentageBatteryIcon\percentage\obj\Debug\百分比电池图标.application
+C:\Users\Oliver\Documents\GitHub\PercentageBatteryIcon\percentage\obj\Debug\百分比电池图标.exe
+C:\Users\Oliver\Documents\GitHub\PercentageBatteryIcon\percentage\obj\Debug\百分比电池图标.pdb

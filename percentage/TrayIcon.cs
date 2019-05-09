@@ -31,32 +31,73 @@ namespace percentage
 
         public TrayIcon()
         {
-            // 从注册表加载颜色
-            RegistryKey hklm = Registry.CurrentUser;
-            RegistryKey lgn0 = hklm.OpenSubKey(@"Software\BatteryIcon", true);
-            if (lgn0 != null)   //当该注册表存在则应用注册表中的值
-            { 
-                RegistryKey lgn = hklm.OpenSubKey(@"Software\BatteryIcon", true);
-                string fontsize = lgn.GetValue("fontsize").ToString();
-                string xoff = lgn.GetValue("xoffset").ToString();
-                string yoff = lgn.GetValue("yoffset").ToString();
-                string normal = lgn.GetValue("normalColor").ToString();
-                string charging = lgn.GetValue("chargingColor").ToString();
-                string low = lgn.GetValue("lowColor").ToString();
-                autoHide = lgn.GetValue("autoHide").ToString();
-                try
-                {
-                    iconFontSize = Convert.ToInt32(fontsize);   // 从字符串获取字体大小
-                    xoffset = Convert.ToInt32(xoff);
-                    yoffset = Convert.ToInt32(yoff);
-                } catch
-                {
-                    // do nothing
-                }
-                normalColor = (Color)new ColorConverter().ConvertFromString(normal);   // 从字符串获取颜色
-                chargingColor = (Color)new ColorConverter().ConvertFromString(charging);   // 从字符串获取颜色
-                lowColor = (Color)new ColorConverter().ConvertFromString(low);   // 从字符串获取颜色
+            //// 从注册表加载颜色
+            //RegistryKey hklm = Registry.CurrentUser;
+            //RegistryKey lgn0 = hklm.OpenSubKey(@"Software\BatteryIcon", true);
+            //if (lgn0 != null)   //当该注册表存在则应用注册表中的值
+            //{ 
+            //    RegistryKey lgn = hklm.OpenSubKey(@"Software\BatteryIcon", true);
+            //    string fontsize = lgn.GetValue("fontsize").ToString();
+            //    string xoff = lgn.GetValue("xoffset").ToString();
+            //    string yoff = lgn.GetValue("yoffset").ToString();
+            //    string normal = lgn.GetValue("normalColor").ToString();
+            //    string charging = lgn.GetValue("chargingColor").ToString();
+            //    string low = lgn.GetValue("lowColor").ToString();
+            //    autoHide = lgn.GetValue("autoHide").ToString();
+            //    try
+            //    {
+            //        iconFontSize = Convert.ToInt32(fontsize);   // 从字符串获取字体大小
+            //        xoffset = Convert.ToInt32(xoff);
+            //        yoffset = Convert.ToInt32(yoff);
+            //    } catch
+            //    {
+            //        // do nothing
+            //    }
+            //    normalColor = (Color)new ColorConverter().ConvertFromString(normal);   // 从字符串获取颜色
+            //    chargingColor = (Color)new ColorConverter().ConvertFromString(charging);   // 从字符串获取颜色
+            //    lowColor = (Color)new ColorConverter().ConvertFromString(low);   // 从字符串获取颜色
+            //}
+
+
+            PTConfig cfg = new PTConfig();
+            cfg.Load();
+            string fontsize = cfg.FontSize;
+            string xoff = cfg.XOffset;
+            string yoff = cfg.YOffset;
+            string normal = cfg.NormalColor;
+            string charging = cfg.ChargingColor;
+            string low = cfg.LowColor;
+            autoHide = cfg.AutoHide;
+            try
+            {
+                iconFontSize = Convert.ToInt32(fontsize);   // 从字符串获取字体大小
             }
+            catch
+            {
+                iconFontSize = 15;
+            }
+            try
+            {
+                xoffset = Convert.ToInt32(xoff);
+            }
+            catch
+            {
+                xoffset = 0;
+            }
+            try
+            {
+                yoffset = Convert.ToInt32(yoff);
+            }
+            catch
+            {
+                yoffset = 0;
+            }
+            normalColor = (Color)new ColorConverter().ConvertFromString(normal);   // 从字符串获取颜色
+            chargingColor = (Color)new ColorConverter().ConvertFromString(charging);   // 从字符串获取颜色
+            lowColor = (Color)new ColorConverter().ConvertFromString(low);   // 从字符串获取颜色
+
+
+
 
             ContextMenu contextMenu = new ContextMenu();
             MenuItem menuItem1 = new MenuItem();    //设置按钮
@@ -99,17 +140,24 @@ namespace percentage
             batteryPercentage = (powerStatus.BatteryLifePercent * 100).ToString();
 
             // 从注册表加载偏移信息
-            RegistryKey hklm = Registry.CurrentUser;
-            RegistryKey lgn = hklm.OpenSubKey(@"Software\BatteryIcon", true);
-            iconFontSize = Convert.ToInt32(lgn.GetValue("fontsize").ToString()); // 更新信息
-            xoffset = Convert.ToInt32(lgn.GetValue("xoffset").ToString());
-            yoffset = Convert.ToInt32(lgn.GetValue("yoffset").ToString());
+            //RegistryKey hklm = Registry.CurrentUser;
+            //RegistryKey lgn = hklm.OpenSubKey(@"Software\BatteryIcon", true);
+            //iconFontSize = Convert.ToInt32(lgn.GetValue("fontsize").ToString()); // 更新信息
+            //xoffset = Convert.ToInt32(lgn.GetValue("xoffset").ToString());
+            //yoffset = Convert.ToInt32(lgn.GetValue("yoffset").ToString());
+
+            PTConfig cfg = new PTConfig();
+            cfg.Load();
+            iconFontSize = Convert.ToInt32(cfg.FontSize);
+            xoffset = Convert.ToInt32(cfg.XOffset);
+            yoffset = Convert.ToInt32(cfg.YOffset);
 
             // 如果电量充满则不显示
             if (batteryPercentage == "100" && autoHide == "true")
             {
-                    notifyIcon.Visible = false;
-            } else
+                notifyIcon.Visible = false;
+            }
+            else
             {
                 if (batteryPercentage == "100")
                 {
@@ -125,12 +173,14 @@ namespace percentage
             if (powerStatus.BatteryChargeStatus.ToString().Contains(BatteryChargeStatus.Charging.ToString()))
             {
                 batteryColor = chargingColor;
-            } else
+            }
+            else
             {
                 if (powerStatus.BatteryChargeStatus.ToString().Contains(BatteryChargeStatus.Low.ToString()))
                 {
                     batteryColor = lowColor;
-                } else
+                }
+                else
                 {
                     batteryColor = normalColor;
                 }
