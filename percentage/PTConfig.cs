@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,10 +22,8 @@ namespace percentage
         public string AutoHide { get; set; }
 
 
-        public PTConfig()
-        {
-            _cfgFile = AppDomain.CurrentDomain.BaseDirectory + "ptcfg.xml";
-        }
+        public PTConfig() => _cfgFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+                                        + "/ptcfg.xml";
 
         public bool ConfigExist()
         {
