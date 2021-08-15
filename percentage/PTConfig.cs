@@ -23,7 +23,7 @@ namespace percentage
 
 
         public PTConfig() => _cfgFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
-                                        + "ptcfg.xml";
+                                        + "/ptcfg.xml";
 
         public bool ConfigExist()
         {
